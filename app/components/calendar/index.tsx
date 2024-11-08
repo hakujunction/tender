@@ -5,6 +5,8 @@ import updateLocale from "dayjs/plugin/updateLocale";
 
 import { Meeting } from "app/db/calendar";
 
+import styles from "./calendar.module.css";
+
 type Props = {
   meetings: Meeting[];
 };
@@ -30,7 +32,7 @@ export default function Calendar({ meetings }: Props) {
   const dateCellRender = (value: Dayjs) => {
     const listData = getListData(value);
     return (
-      <ul className="events">
+      <ul className={styles.events}>
         {listData.map((item) => (
           <li key={item.content}>
             <Badge status={item.type as BadgeProps["status"]} text={item.content} />
@@ -47,7 +49,7 @@ export default function Calendar({ meetings }: Props) {
 
   return (
     <div>
-      <AntCalendar cellRender={cellRender} />
+      <AntCalendar className={styles.calendar} cellRender={cellRender} />
     </div>
   );
 }

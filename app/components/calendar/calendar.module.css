@@ -1,0 +1,11 @@
+.calendar :global(.ant-picker-calendar-mode-switch) {
+  display: none;
+}
+
+.events :global(.ant-badge-status) {
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
