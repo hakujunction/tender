@@ -1,6 +1,7 @@
+import {Roboto} from 'next/font/google';
+import {ThemeProvider} from '@mui/material/styles';
+import theme from 'app/theme';
 import './globals.css';
-
-import { GeistSans } from 'geist/font/sans';
 
 let title = 'Next.js + Postgres Auth Starter';
 let description =
@@ -17,6 +18,12 @@ export const metadata = {
   metadataBase: new URL('https://nextjs-postgres-auth.vercel.app'),
 };
 
+const roboto = Roboto({
+  weight: ['300', '400', '500', '700'],
+  display: 'swap',
+  variable: '--font-roboto',
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -24,7 +31,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={GeistSans.variable}>{children}</body>
+      <body className={roboto.variable}>
+        <ThemeProvider theme={theme}>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
