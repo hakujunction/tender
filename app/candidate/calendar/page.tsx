@@ -1,7 +1,7 @@
 import { auth } from "app/auth";
-import { getMeetings } from "../db";
-import { getUser } from "../db";
-import Calendar from "../components/calendar";
+import { getMeetings } from "../../db";
+import { getUser } from "../../db";
+import Calendar from "../../components/calendar";
 
 export default async function CalendarPage() {
   const session = await auth();
