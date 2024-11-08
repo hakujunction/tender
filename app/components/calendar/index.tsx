@@ -1,5 +1,5 @@
 "use client";
-import { Badge, BadgeProps, Calendar, CalendarProps } from "antd";
+import { Badge, BadgeProps, Calendar as AntCalendar, CalendarProps } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import updateLocale from "dayjs/plugin/updateLocale";
 
@@ -14,7 +14,7 @@ dayjs.updateLocale("en", {
   weekStart: 1,
 });
 
-export default function CalendarComponent({ meetings }: Props) {
+export default function Calendar({ meetings }: Props) {
   const getListData = (value: Dayjs) => {
     const meetingsOnDate = meetings.filter((meeting) => {
       const meetingDate = dayjs(meeting.date_start);
@@ -47,7 +47,7 @@ export default function CalendarComponent({ meetings }: Props) {
 
   return (
     <div>
-      <Calendar cellRender={cellRender} />
+      <AntCalendar cellRender={cellRender} />
     </div>
   );
 }
