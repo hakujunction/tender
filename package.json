@@ -20,11 +20,13 @@
     "next": "^14.0.4",
     "next-auth": "5.0.0-beta.4",
     "openai": "^4.71.1",
+    "pdf-parse": "^1.1.1",
     "postgres": "^3.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/pdf-parse": "^1.1.4",
     "autoprefixer": "^10.4.16",
     "eslint": "8.56.0",
     "eslint-config-next": "^14.0.4",
