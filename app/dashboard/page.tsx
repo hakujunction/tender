@@ -1,6 +1,5 @@
-import { Box } from "@mui/material";
 import { auth, signOut } from "app/auth";
-import {User} from "app/components/user"
+import { User } from "app/components/user";
 
 export default async function CompaniesPage() {
   const session = await auth();
@@ -9,18 +8,14 @@ export default async function CompaniesPage() {
     return null;
   }
 
-  return (
-    <Box display="flex" padding={2}>
-      <User email={session.user.email} />
-    </Box>
-  );
+  return <User email={session.user.email} />;
 }
 
 function SignOut() {
   return (
     <form
       action={async () => {
-        'use server';
+        "use server";
         await signOut();
       }}
     >

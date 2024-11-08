@@ -7,14 +7,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.1.0",
-    "@mui/icons-material": "^6.1.6",
-    "@mui/material": "^6.1.6",
+    "@googleapis/calendar": "^9.7.9",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
+    "antd": "^5.21.6",
     "bcrypt-ts": "^5.0.0",
     "drizzle-orm": "^0.29.2",
     "geist": "^1.2.0",
