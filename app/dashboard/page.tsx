@@ -1,7 +1,11 @@
-import { auth, signOut } from 'app/auth';
+import { auth, signOut } from "app/auth";
 
-export default async function ProtectedPage() {
-  let session = await auth();
+export default async function CompaniesPage() {
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen bg-black">
