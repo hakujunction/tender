@@ -11,11 +11,11 @@ export default function Login() {
     let password = formData.get('password') as string;
     let user = await getUser(email);
 
-    if (user.length > 0) {
-      return 'User already exists'; // TODO: Handle errors with useFormStatus
+    if (!user) {
+      return "User already exists"; // TODO: Handle errors with useFormStatus
     } else {
       await createUser(email, password);
-      redirect('/login');
+      redirect("/login");
     }
   }
 
