@@ -2,10 +2,23 @@
   display: none;
 }
 
-.events :global(.ant-badge-status) {
+.event :global(.ant-badge-status) {
   width: 100%;
   overflow: hidden;
   font-size: 12px;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.event {
+  display: flex;
+  align-items: center;
+}
+
+.time {
+  font-size: 12px;
+  height: 14px;
+  line-height: 14px;
+  padding: 0 4px;
+  color: #8c8c8c;
 }

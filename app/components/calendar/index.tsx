@@ -23,10 +23,15 @@ export default function Calendar({ meetings }: Props) {
       return meetingDate.format("YYYY-MM-DD") === value.format("YYYY-MM-DD");
     });
 
-    return meetingsOnDate.map((meeting) => ({
-      type: meeting.type === 0 ? "warning" : "success",
-      content: meeting.name,
-    }));
+    return meetingsOnDate.map((meeting) => {
+      const meetingDate = dayjs(meeting.date_start);
+      const time = meetingDate.format("HH:mm");
+      return {
+        type: meeting.type === 0 ? "warning" : "success",
+        content: meeting.name,
+        time,
+      };
+    });
   };
 
   const dateCellRender = (value: Dayjs) => {
@@ -35,7 +40,10 @@ export default function Calendar({ meetings }: Props) {
       <ul className={styles.events}>
         {listData.map((item) => (
           <li key={item.content}>
-            <Badge status={item.type as BadgeProps["status"]} text={item.content} />
+            <div className={styles.event} title={`${item.content ?? ""} at ${item.time}`}>
+              <Badge status={item.type as BadgeProps["status"]} text={item.content} />
+              <div className={styles.time}>{item.time}</div>
+            </div>
           </li>
         ))}
       </ul>
