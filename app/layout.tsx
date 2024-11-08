@@ -22,6 +22,7 @@ const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   display: 'swap',
   variable: '--font-roboto',
+  subsets: ['cyrillic', 'latin', 'cyrillic-ext', 'latin-ext']
 });
 
 export default function RootLayout({
