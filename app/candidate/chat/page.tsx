@@ -27,13 +27,20 @@ export default function ChatPage() {
     <form onSubmit={async (e) => {
       e.preventDefault();
       if (text.trim() || file) {
-        // read base64 from file
-        let reader = new FileReader();
-        reader.readAsDataURL(file!);
-        reader.onload = async () => {
-          let base64 = reader.result;
+        if (file) {
+          // read base64 from file
+          let reader = new FileReader();
+          reader.readAsDataURL(file!);
+          reader.onload = async () => {
+            let base64 = reader.result;
+            setText("");
+            setFile(null);
+            await answer(text, base64 as string);
+            setMessages(await getMessages());
+          }
+        } else {
           setText("");
-          await answer(text, base64 as string);
+          await answer(text, "");
           setMessages(await getMessages());
         }
       }
