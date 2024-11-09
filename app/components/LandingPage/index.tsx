@@ -11,7 +11,7 @@ const LandingPage = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}>
-      <div className="container mx-auto py-4 px-4">
+      <div className="container mx-auto py- px-4">
         {/* First Block for Candidates */}
         <section className="mb-16">
           <motion.div
@@ -21,7 +21,7 @@ const LandingPage = () => {
             transition={{ duration: 1 }}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gradient bg-clip-text text-green-400 bg-gradient-to-r from-green-400 to-blue-500">
-              For Candidates🧑‍🎓: Unlock Your Career and Wellbeing Potential
+              For Candidates🧑: Unlock Your Career and Wellbeing Potential
             </h2>
           </motion.div>
           <Row gutter={[16, 16]} justify="center">
@@ -103,7 +103,7 @@ const LandingPage = () => {
             transition={{ duration: 1 }}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gradient bg-clip-text text-blue-400 bg-gradient-to-r from-blue-400 to-purple-600">
-              For Companies 💼: Enhance Your Organization's Wellbeing Culture
+              For Companies 💼: Enhance Your Organization&apos;s Wellbeing Culture
             </h2>
           </motion.div>
           <Row gutter={[16, 16]} justify="center">
