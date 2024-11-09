@@ -4,6 +4,10 @@ import {getSearchParams, getUser, getUserCompanies, setUserCompanies} from "app/
 import {auth} from "app/auth";
 import { addEvents, getAllCompanies, getAllEvents, getAppliedCompanies, insertCompanyCandidate } from "app/db";
 
+function randomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 export async function getCompanies() {
   const session = await auth();
 
@@ -57,6 +61,7 @@ export async function getCompanies() {
   const companiesResult = companies.map((company: any) => {
     return {
       ...company,
+      match_percent: company.match_percent ?? randomInt(0, 99),
       ...mapCompanies.get(company.id),
     };
   });

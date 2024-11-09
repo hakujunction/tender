@@ -4,7 +4,7 @@ import {
   AimOutlined,
   CheckOutlined,
 } from "@ant-design/icons";
-import {Button, List, notification} from "antd";
+import {Button, List, notification, Spin} from "antd";
 
 import {Content} from "antd/lib/layout/layout";
 import {applyToCompany, getCompanies} from "./actions";
@@ -49,9 +49,10 @@ export default function RecommendationsPage() {
   }, []);
 
   return (
-    <Content style={{ padding: "20px", overflowY: "auto", flex: 1 }}>
+    <>
       {contextHolder}
-      <List
+      {companies.length > 0 ? <List
+        style={{padding: "24px"}}
         loading={!isLoaded}
         dataSource={companies}
         renderItem={(item: any) => (
@@ -88,7 +89,16 @@ export default function RecommendationsPage() {
             />
           </List.Item>
         )}
-      ></List>
-    </Content>
+      ></List> : <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
+      <Spin />
+    </div>}
+    </>
   );
 }
