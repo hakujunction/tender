@@ -41,17 +41,18 @@ const ChoiceButtons = () => {
 
 
   return (
-    <Row style={{ minHeight: '57vh', marginBottom: '-25px' }}>
+    <Row style={{ minHeight: '57vh' }}>
       {/* Левая колонка */}
       <Col
-        span={12}
+        
+        xs={24} sm={12} md={12} lg={12}
         className="column"
         style={{
           backgroundColor: 'rgba(0,0,0, 0.5)',
           display: 'flex',
           alignItems: 'top',
           justifyContent: 'center',
-          padding: '20px 40px',
+          padding: '0px 40px 35px',
           transition: 'all 1s',
           cursor: 'pointer'
         }}
@@ -64,31 +65,33 @@ const ChoiceButtons = () => {
           paddingTop: '50px'
         }}
         >
-          <Title className="text-white" style={{ textAlign: 'center', color: '#fff'}} level={2}>For Candidate</Title>
-          <Paragraph className="text-gray-300" style={{ fontSize: '18px', marginTop: '-6px'}}>Explore career and wellness options</Paragraph>
+          <Title className="text-white" style={{ textAlign: 'center', color: '#fff'}} level={2}>For Candidates: Unlock Your Career and Wellbeing Potential</Title>
+          <Paragraph className="text-gray-300" style={{ fontSize: '18px', marginTop: '-6px'}}>Take control of your future with personalized insights:</Paragraph>
 
             <>
               <GradientList
                 data={[
-                  'Choose your hard skills',
-                  'Understand your wellbeing priorities',
-                  'Get job list',
+                  'Prioritize Your Wellbeing: Understand what truly matters for your health and happiness.',
+                  'Identify Your Key Skills: Highlight your hard skills to match with the best opportunities.',
+                  'Discover Tailored Job Opportunities: Get a curated list of jobs that align with your skills and wellness goals.'
                 ]}
               />
             </>
-              <Button type="primary" href='/candidate/chat' size='large' style={{width: '100%'}}>Create Your Profile</Button>
+              <Button type="primary" href='/candidate/chat' size='large' style={{width: '100%'}}>Create Your Profile Today and Start Your Journey!
+
+</Button>
         </div>
         </div>
       </Col>
       <Col
-        span={12}
+        xs={24} sm={12} md={12} lg={12}
         className="column"
         style={{
           backgroundColor: 'rgba(0,0,0, 0.5)',
           display: 'flex',
           alignItems: 'top',
           justifyContent: 'center',
-          padding: '20px 40px',
+          padding: '0px 40px 35px',
           transition: 'opacity 0.5s ease',
           cursor: 'pointer'
         }}

@@ -4,13 +4,14 @@ import { Layout, Menu, Button, Row, Col, Card, Typography, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import Link from 'antd/es/typography/Link';
 import ChoiceButtons from './components/ChoiceButtons';
+import LandingPage from './components/LandingPage';
 
 const { Header, Content, Footer } = Layout;
 const { Title, Text } = Typography;
 
 const AppLandingPage = () => {
   return (
-    <Layout style={{minHeight: '100vh' }}>
+    <Layout className='bg-gray-900' style={{minHeight: '100vh' }}>
       {/* Header */}
       <Header style={{ position: 'fixed', width: '100%', zIndex: 1 }}>
         <div className="logo" style={{ float: 'left', color: '#fff', fontSize: 24, paddingRight: '48px' }}>Tender</div>
@@ -28,12 +29,8 @@ const AppLandingPage = () => {
       <Content style={{ padding: '0', marginTop: 64, flex: 1}}
       >
         {/* Hero Section */}
-        <Row justify="center" align="middle" style={{
+        <Row bg-gray-900 justify="center" align="middle" style={{
           minHeight: 'calc(100vh - 150px)',
-          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/hero.jpg")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backdropFilter: 'blur(5px)',
           color: '#fff',
           textAlign: 'center',
         }}>
@@ -59,7 +56,7 @@ const AppLandingPage = () => {
        </div>
        </Col>
         <Col span={24}>
-              <ChoiceButtons />
+             <LandingPage />
         </Col>
         </Row>
 
