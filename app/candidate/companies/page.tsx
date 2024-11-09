@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {
   AimOutlined,
 } from "@ant-design/icons";
-import {Button, List, notification} from "antd";
+import {Button, List, notification, Progress, Skeleton} from "antd";
 
 import {Content} from "antd/lib/layout/layout";
 import {applyToCompany, getCompanies} from "./actions";
@@ -14,6 +14,7 @@ import Link from "next/link";
 type NotificationPlacement = NotificationArgsProps['placement'];
 
 export default function RecommendationsPage() {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [companies, setCompanies] = useState<any[]>([]);
   const [api, contextHolder] = notification.useNotification();
 
@@ -28,6 +29,7 @@ export default function RecommendationsPage() {
   useEffect(() => {
     (async () => {
       setCompanies(await getCompanies());
+      setIsLoaded(true);
     })();
   }, []);
 
@@ -35,6 +37,7 @@ export default function RecommendationsPage() {
     <Content style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
       {contextHolder}
       <List
+        loading={!isLoaded}
         dataSource={companies}
         renderItem={(item: any) => (
           <List.Item actions={[
