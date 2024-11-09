@@ -85,7 +85,7 @@ const LandingPage = () => {
               <Button
                 type="primary"
                 size="large"
-                href="/candidate"
+                href="/register"
                 className="bg-green-400 hover:bg-green-500 text-black transition duration-300 w-full sm:w-auto text-lg py-4 px-6 shadow-lg hover:shadow-xl transform hover:scale-105 glow-effect"
               >
                 Create Your Profile Today and Start Your Journey  🚀 🚀 🚀
