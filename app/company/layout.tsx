@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { CalendarOutlined } from "@ant-design/icons";
+import { UserOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 
 import styles from "./layout.module.css";
-import AuthServerProvider from "../contexts/AuthServerProvider";
-import { getUser } from "../user";
 import { getCompany } from "../db";
 
 export default async function CompanyLayout({ children }: { children: React.ReactNode }) {
@@ -15,8 +13,11 @@ export default async function CompanyLayout({ children }: { children: React.Reac
         {company.name}
 
         <div className={styles.menu}>
-          <Link href="/company/dashboard">
-            <CalendarOutlined /> Dashboard
+          <Link href="/company/employees">
+            <UserOutlined /> Employees
+          </Link>
+          <Link href="/company/candidates">
+            <UsergroupAddOutlined /> Candidates
           </Link>
         </div>
       </div>
