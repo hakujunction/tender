@@ -7,7 +7,6 @@ const authMiddleware = NextAuth(authConfig).auth;
 const authMiddlewareCompany = NextAuth(companyAuthConfig).auth;
 
 export function middleware(request: NextRequest) {
-  console.log("MIDDLEWARE", request.nextUrl.pathname);
   if (request.nextUrl.pathname.startsWith("/company")) {
     // @ts-ignore
     return authMiddlewareCompany(request);
