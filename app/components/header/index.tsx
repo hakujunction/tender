@@ -19,7 +19,7 @@ type Props = {
 
 export default function Header({ avatar, items }: Props) {
   const router = useRouter();
-  const [selectedKey, setSelectedKey] = useState(window.location.pathname);
+  const [selectedKey, setSelectedKey] = useState(window?.location?.pathname ?? "");
 
   const preparedItems = items.map((item) => ({
     label: item.name,
@@ -29,7 +29,7 @@ export default function Header({ avatar, items }: Props) {
   }));
 
   useEffect(() => {
-    setSelectedKey(window.location.pathname);
+    setSelectedKey(window?.location?.pathname ?? "");
   });
 
   return (
@@ -38,7 +38,7 @@ export default function Header({ avatar, items }: Props) {
       <Menu
         theme="dark"
         mode="horizontal"
-        activeKey={window.location.pathname}
+        activeKey={selectedKey}
         defaultActiveFirst
         items={preparedItems}
         style={{ flex: 1, minWidth: 0 }}
