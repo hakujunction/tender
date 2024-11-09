@@ -69,7 +69,7 @@ export default function Calendar({ meetings }: Props) {
 
       return {
         id: meeting.id,
-        type: meeting.type === 0 ? "warning" : "success",
+        type: meeting.type === 0 ? "default" : "success",
         content: meeting.name,
         description: renderTextWithNewLines(renderTextWithLinks(meeting.description ?? "")),
         time,
