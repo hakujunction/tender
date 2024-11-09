@@ -63,6 +63,7 @@ type UserCompany = {
   size: string,
   description: string,
   requirements: string
+  match_percent: number
 }
 
 export async function getUserCompanies(email: string) {

@@ -1,8 +1,8 @@
 "use server";
 import { openai } from "app/ai";
-import {getSearchParams, getUser, setUserCompanies} from "app/db/user";
+import {getSearchParams, getUser, getUserCompanies, setUserCompanies} from "app/db/user";
 import {auth} from "app/auth";
-import { addEvents, getAllCompanies, getAllEvents, getAppliedCompanies, insertCompanies, insertCompanyCandidate } from "app/db";
+import { addEvents, getAllCompanies, getAllEvents, getAppliedCompanies, insertCompanyCandidate } from "app/db";
 
 export async function getCompanies() {
   const session = await auth();
@@ -10,19 +10,40 @@ export async function getCompanies() {
   if (!session?.user?.email) {
     return {companies: [], applications: []};
   }
-
   const user = await getUser(session.user.email);
 
+  const [dbUserCompanies, applications] = await Promise.all([
+    getUserCompanies(session.user.email),
+    getAppliedCompanies(user.id)
+  ]);
+
+  if (dbUserCompanies.length > 0) {
+    return {companies: dbUserCompanies, applications};
+  }
+
   const dbCompanies = await getAllCompanies();
-  const applications = await getAppliedCompanies(user.id);
   const searchParams = await getSearchParams(session.user.email);
+
+  const dbCompaniesSkillsTagsAndIds = dbCompanies.map((company: any) => {
+    return {
+      id: company.id,
+      skills: company.skills,
+      tags: company.tags,
+    };
+  });
+
+  const mapCompanies: Map<number, any> = dbCompanies.reduce((acc: Map<number, any>, company: any) => {
+    acc.set(company.id, company);
+    return acc;
+  }, new Map());
+
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
-      {"role": "user", "content": `Sort companies based on my skills and print one by one per line ${JSON.stringify(dbCompanies)}.`},
+      {"role": "user", "content": `Sort companies based on my skills and print one by one per line ${JSON.stringify(dbCompaniesSkillsTagsAndIds)}.`},
       {"role": "user", "content": `I have ${searchParams.skills.length} skills: ${searchParams.skills.join(", ")}. I have the following interests: ${searchParams.tags.join(', ')}.`},
-      {"role": "user", "content": `Print strictly only JSON inline one per line without markdown like \`\`\`json and and numbe match_percent for each company with value strictly from 0 to 99. Very important doesn't change format of every item and save the same ID in JSON array`},
+      {"role": "user", "content": `Print strictly only JSON inline one per line without markdown like \`\`\`json and always number match_percent for each company with value strictly from 0 to 99. Very important doesn't change format of every item and save the same ID in JSON array`},
     ]
   });
 
@@ -33,7 +54,16 @@ export async function getCompanies() {
     }
   });
 
-  return {companies, applications};
+  const companiesResult = companies.map((company: any) => {
+    return {
+      ...company,
+      ...mapCompanies.get(company.id),
+    };
+  });
+
+  await setUserCompanies(session.user.email, companiesResult);
+
+  return {companies: companiesResult, applications};
 }
 
 type Company = {
