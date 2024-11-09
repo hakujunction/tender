@@ -17,9 +17,18 @@ type Props = {
   avatar?: React.ReactNode;
 };
 
+const getPathname = (defaultPathname: string) => {
+  if (typeof window === "undefined") {
+    return defaultPathname;
+  }
+
+  return window.location.pathname;
+};
+
 export default function Header({ avatar, items }: Props) {
   const router = useRouter();
-  const [selectedKey, setSelectedKey] = useState(window?.location?.pathname ?? "");
+  const pathname = getPathname(items[0].href);
+  const [selectedKey, setSelectedKey] = useState(pathname);
 
   const preparedItems = items.map((item) => ({
     label: item.name,
@@ -29,8 +38,8 @@ export default function Header({ avatar, items }: Props) {
   }));
 
   useEffect(() => {
-    setSelectedKey(window?.location?.pathname ?? "");
-  });
+    setSelectedKey(pathname);
+  }, [pathname]);
 
   return (
     <AntHeader style={{ display: "flex", alignItems: "center", gap: 32 }}>
