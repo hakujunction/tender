@@ -7,6 +7,7 @@ import { Meeting } from "app/db/calendar";
 
 import styles from "./calendar.module.css";
 import { useState } from "react";
+import Link from "next/link";
 
 type Props = {
   meetings: Meeting[];
@@ -16,6 +17,20 @@ dayjs.extend(updateLocale);
 dayjs.updateLocale("en", {
   weekStart: 1,
 });
+
+const renderTextWithLinks = (text: string) => {
+  const urlRegex = /(https?:\/\/[^\s)]+)/g;
+  return text.split(urlRegex).map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <Link key={`${part}-${index}`} href={part} target="_blank">
+          {part}
+        </Link>
+      );
+    }
+    return part;
+  });
+};
 
 export default function Calendar({ meetings }: Props) {
   const [selectedMeeting, setSelectedMeeting] = useState<any | null>(null);
@@ -41,7 +56,7 @@ export default function Calendar({ meetings }: Props) {
         id: meeting.id,
         type: meeting.type === 0 ? "warning" : "success",
         content: meeting.name,
-        description: meeting.description,
+        description: renderTextWithLinks(meeting.description ?? ""),
         time,
       };
     });
@@ -54,16 +69,20 @@ export default function Calendar({ meetings }: Props) {
         {listData.map((item) => (
           <Popover
             key={item.content}
-            content={<div style={{maxWidth: '300px'}}>{item.description}</div>}
+            content={<div style={{ maxWidth: "300px" }}>{item.description}</div>}
             title={item.content}
             trigger="click"
             open={selectedMeeting?.id === item.id}
             onOpenChange={handleOpenChange}
           >
             <li>
-              <div className={styles.event} title={`${item.content ?? ""} at ${item.time}`} onClick={() => setSelectedMeeting(item)}>
-                  <Badge status={item.type as BadgeProps["status"]} text={item.content} />
-                  <div className={styles.time}>{item.time}</div>
+              <div
+                className={styles.event}
+                title={`${item.content ?? ""} at ${item.time}`}
+                onClick={() => setSelectedMeeting(item)}
+              >
+                <Badge status={item.type as BadgeProps["status"]} text={item.content} />
+                <div className={styles.time}>{item.time}</div>
               </div>
             </li>
           </Popover>

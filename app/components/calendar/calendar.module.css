@@ -6,6 +6,11 @@
   list-style: none;
 }
 
+.events {
+  margin: 0;
+  padding: 0;
+}
+
 .event :global(.ant-badge-status) {
   width: 100%;
   overflow: hidden;
