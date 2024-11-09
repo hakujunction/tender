@@ -21,8 +21,10 @@ export default async function AuthServerProvider({
   }
 
   const sessionObject = {} as User;
-  sessionObject.id = session.user.id;
 
+  if (session.user.id) {
+    sessionObject.id = session.user.id;
+  }
   if (session.user.email) {
     sessionObject.email = session.user.email;
   }

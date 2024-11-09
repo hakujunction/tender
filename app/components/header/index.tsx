@@ -35,7 +35,17 @@ export default function Header({ avatar, items }: Props) {
   }, [pathname]);
 
   return (
-    <AntHeader style={{ display: "flex", alignItems: "center", gap: 32 }}>
+    <AntHeader
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 32,
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        width: "100%",
+      }}
+    >
       {avatar}
       <Menu
         theme="dark"

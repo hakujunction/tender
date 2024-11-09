@@ -1,8 +1,9 @@
 import { NextAuthConfig } from 'next-auth';
+import { getUser } from "./db";
 
 export const authConfig = {
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
   providers: [
     // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
@@ -11,10 +12,11 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       let isLoggedIn = !!auth?.user?.email;
-      let isAnonymPage = nextUrl.pathname === '/' || nextUrl.pathname.startsWith("/company") || nextUrl.pathname.includes('jpg');
-      let isAuthPage = ['/login', '/register'].some((path) =>
-        nextUrl.pathname.startsWith(path),
-      );
+      let isAnonymPage =
+        nextUrl.pathname === "/" ||
+        nextUrl.pathname.startsWith("/company") ||
+        nextUrl.pathname.includes("jpg");
+      let isAuthPage = ["/login", "/register"].some((path) => nextUrl.pathname.startsWith(path));
 
       if (isAnonymPage) return true;
       if (!isAuthPage) {
