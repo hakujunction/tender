@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { pgTable, serial, varchar, integer, timestamp } from "drizzle-orm/pg-core";
 import { db } from "./client";
 
@@ -56,6 +56,15 @@ export async function addEvents(userId: number, events: EventDTO[]) {
       created_at: new Date(),
     };
   }));
+}
+
+export async function getAllEvents(userId: number) {
+  const calendar = await calendarTable();
+  const events = await db.select().from(calendar).where(
+    eq(calendar.user_id, userId),
+  );
+
+  return events;
 }
 
 export type Meeting = Awaited<ReturnType<typeof getMeetings>>[number];

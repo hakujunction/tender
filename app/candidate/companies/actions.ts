@@ -2,7 +2,7 @@
 import { openai } from "app/ai";
 import {getSearchParams, getUser} from "app/db/user";
 import {auth} from "app/auth";
-import { addEvents } from "app/db";
+import { addEvents, getAllEvents } from "app/db";
 
 export async function getCompanies() {
   const session = await auth();
@@ -40,13 +40,24 @@ export async function applyToCompany(company: Company) {
   if (!session?.user?.email) {
     return;
   }
-
   const user = await getUser(session.user.email);
+
+
+  const currentEvents = await getAllEvents(user.id);
+  const eventsIntervals = currentEvents.filter(event => {
+    return event.date_start && event.date_end;
+  }).map((event) => {
+    return {
+      start: event.date_start!.toString(),
+      end: event.date_end!.toString(),
+    };
+  });
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {"role": "system", "content": `User applies to company ${JSON.stringify(company)}. Generate 5 events starting from ${new Date().toLocaleDateString()} in JSON strictly in one JSON per line with list of events for roadmap to prepare for interview in format: {"date_start": "unix timestamp", "date_end", "name": "Event name", "description": "Event description with steps and usefull links"}.`},
+      {"role": "user", "content": `I have ${eventsIntervals.length} events in my calendar: ${JSON.stringify(eventsIntervals)}.`},
     ]
   });
 
