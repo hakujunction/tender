@@ -16,6 +16,10 @@ export async function getCompanies() {
   }
   const user = await getUser(session.user.email);
 
+  if (!user.search_params?.skills || user.search_params.skills.length === 0 || !user.search_params?.tags || user.search_params.tags.length === 0) {
+    return {companies: [], applications: []};
+  }
+
   const [dbUserCompanies, applications] = await Promise.all([
     getUserCompanies(session.user.email),
     getAppliedCompanies(user.id)

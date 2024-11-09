@@ -22,20 +22,20 @@ const AppLandingPage = () => {
         </Menu> */}
       </Header>
 
-      
+
 
       {/* Main Content */}
       <a id="home" />
       <Content style={{ padding: '0', marginTop: 64, flex: 1}}
       >
         {/* Hero Section */}
-        <Row bg-gray-900 justify="center" align="middle" style={{
+        <Row justify="center" align="middle" style={{
           minHeight: 'calc(100vh - 150px)',
           color: '#fff',
           textAlign: 'center',
         }}>
         <Col span={32}>
-        <div className="flex space-x-3 justify-center" 
+        <div className="flex space-x-3 justify-center"
         style={{
           borderRadius: '20px',
           padding: '0 20px'
@@ -60,7 +60,7 @@ const AppLandingPage = () => {
         </Col>
         </Row>
 
-        {/* Features Section 
+        {/* Features Section
         <a id="features" />
         <Row gutter={16} style={{ marginTop: 32 }}>
           <Col span={8}>
@@ -84,7 +84,7 @@ const AppLandingPage = () => {
 
 
 
-        {/* Profile Setup Section 
+        {/* Profile Setup Section
         <a id="get-started" />
         <Row justify="center" style={{ marginTop: 64 }}>
           <Col span={12} style={{ textAlign: 'center' }}>

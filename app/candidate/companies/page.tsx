@@ -4,12 +4,12 @@ import {
   AimOutlined,
   CheckOutlined,
 } from "@ant-design/icons";
-import {Button, List, notification, Spin} from "antd";
+import {Button, List, notification, Spin, Typography} from "antd";
 
-import {Content} from "antd/lib/layout/layout";
 import {applyToCompany, getCompanies} from "./actions";
 
 import type { NotificationArgsProps } from "antd";
+import { InfoBox } from "./infobox";
 
 type NotificationPlacement = NotificationArgsProps['placement'];
 
@@ -50,9 +50,15 @@ export default function RecommendationsPage() {
 
   return (
     <>
+      {companies.length > 0 ? <div style={{padding: "16px"}}>
+        <InfoBox title="How to find the dream company?" description="There is the list of companies which better match your experience and well-being priorities. You can apply to them by creating a roadmap and we will create a calendar events for you to track your progress. Finishing the roadmap will increase your match score. You can mark events as done in the calendar. It increases the chance of getting an intetrview and find the job of your dreams 🧑‍💻." />
+      </div> : null}
+      {companies.length === 0 ? <div style={{padding: "16px"}}>
+        <InfoBox title="No companies found" description="There is no companies which better match your experience and well-being priorities. Update the information in your profile through the chat and come back here." />
+      </div> : null}
       {contextHolder}
       {companies.length > 0 ? <List
-        style={{padding: "16px"}}
+        style={{padding: "36px", paddingTop: 0}}
         loading={!isLoaded}
         dataSource={companies}
         renderItem={(item: any) => (
