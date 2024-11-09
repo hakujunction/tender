@@ -10,7 +10,7 @@ export const authConfig = {
   ],
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      let isLoggedIn = !!auth?.user;
+      let isLoggedIn = !!auth?.user?.email;
       let isAnonymPage = nextUrl.pathname === '/' || nextUrl.pathname.includes('jpg');
       let isAuthPage = ['/login', '/register'].some((path) =>
         nextUrl.pathname.startsWith(path),
