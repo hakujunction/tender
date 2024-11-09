@@ -14,7 +14,7 @@ const AppLandingPage = () => {
     <Layout className='bg-gray-900' style={{minHeight: '100vh' }}>
       {/* Header */}
       <Header style={{ position: 'fixed', width: '100%', zIndex: 1 }}>
-        <div className="logo" style={{ float: 'left', color: '#fff', fontSize: 24, paddingRight: '48px' }}>Tender</div>
+        <div className="logo" style={{ float: 'left', color: '#fff', fontSize: 36, paddingRight: '48px', fontFamily: 'sans-serif, "Open Sans"', fontWeight: 800, letterSpacing: -2 }}>TENDER</div>
        {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
           <Menu.Item key="1"><Link href="#home">Home</Link></Menu.Item>
           <Menu.Item key="2"><Link href="#features">Features</Link></Menu.Item>
