@@ -1,5 +1,5 @@
 "use client";
-import { Badge, BadgeProps, Calendar as AntCalendar, CalendarProps, Popover } from "antd";
+import { Badge, BadgeProps, Calendar as AntCalendar, CalendarProps, Popover, Button, NotificationArgsProps, notification } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import updateLocale from "dayjs/plugin/updateLocale";
 
@@ -8,6 +8,9 @@ import { Meeting } from "app/db/calendar";
 import styles from "./calendar.module.css";
 import { useState } from "react";
 import Link from "next/link";
+import { toggleDoneAction } from "./actions";
+
+type NotificationPlacement = NotificationArgsProps['placement'];
 
 type Props = {
   meetings: Meeting[];
@@ -48,6 +51,23 @@ const renderTextWithNewLines = (texts: Array<string | JSX.Element>) => {
 
 export default function Calendar({ meetings }: Props) {
   const [selectedMeeting, setSelectedMeeting] = useState<any | null>(null);
+  const [api, contextHolder] = notification.useNotification();
+  const [doneEvents, setDoneEvents] = useState<number[]>(() => {
+    return meetings.filter((meeting) => meeting.done).map((meeting) => meeting.id);
+  });
+  const [doneRequest, setDoneRequest] = useState(false);
+
+  const openNotification = (placement: NotificationPlacement) => {
+    api.info({
+      message: `Event is updated`,
+      description: (
+        <p>
+          The events have been updated in your calendar.
+        </p>
+      ),
+      placement,
+    });
+  };
 
   const hide = () => {
     setSelectedMeeting(null);
@@ -56,6 +76,17 @@ export default function Calendar({ meetings }: Props) {
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) hide();
   };
+
+  const markAsDone =  (id: number) => {
+    setDoneEvents(Array.from(new Set([...doneEvents, id])));
+  }
+
+  const markAsUndone = (id: number) => {
+    setDoneEvents((e) => {
+      const newEvents = e.filter((eventId) => eventId !== id);
+      return newEvents;
+    });
+  }
 
   const getListData = (value: Dayjs) => {
     const meetingsOnDate = meetings.filter((meeting) => {
@@ -66,12 +97,14 @@ export default function Calendar({ meetings }: Props) {
     return meetingsOnDate.map((meeting) => {
       const meetingDate = dayjs(meeting.date_start);
       const time = meetingDate.format("HH:mm");
+      const done = doneEvents.includes(meeting.id);
 
       return {
         id: meeting.id,
-        type: meeting.type === 0 ? "default" : "success",
+        type: done ? "default" : (meeting.type === 0 ? "default" : "success"),
         content: meeting.name,
         description: renderTextWithNewLines(renderTextWithLinks(meeting.description ?? "")),
+        done: doneEvents.includes(meeting.id),
         time,
       };
     });
@@ -84,7 +117,29 @@ export default function Calendar({ meetings }: Props) {
         {listData.map((item) => (
           <Popover
             key={item.content}
-            content={<div style={{ maxWidth: "300px" }}>{item.description}</div>}
+            content={
+              <div style={{ maxWidth: "300px" }}>
+                <p>
+                  {item.description}
+                </p>
+                {item.done ?
+                  <Button disabled={doneRequest} onClick={async () => {
+                    setDoneRequest(true);
+                    await toggleDoneAction(item.id);
+                    markAsUndone(item.id);
+                    openNotification("topRight");
+                    setDoneRequest(false);
+                  }}>Mark as undone</Button> :
+                  <Button disabled={doneRequest} onClick={async () => {
+                    setDoneRequest(true);
+                    await toggleDoneAction(item.id);
+                    markAsDone(item.id);
+                    openNotification("topRight");
+                    setDoneRequest(false);
+                  }}>Mark as done</Button>
+                }
+              </div>
+            }
             title={item.content}
             trigger="click"
             open={selectedMeeting?.id === item.id}
@@ -92,11 +147,18 @@ export default function Calendar({ meetings }: Props) {
           >
             <li>
               <div
+                style={{
+                  textDecoration: item.done ? "line-through" : "none"
+                }}
                 className={styles.event}
                 title={`${item.content ?? ""} at ${item.time}`}
                 onClick={() => setSelectedMeeting(item)}
               >
-                <Badge status={item.type as BadgeProps["status"]} text={item.content} />
+                <Badge
+                  status={item.type as BadgeProps["status"]}
+                  text={item.content}
+                  style={{ color: item.done ? "gray" : "inherit" }}
+                />
                 <div className={styles.time}>{item.time}</div>
               </div>
             </li>
@@ -113,6 +175,7 @@ export default function Calendar({ meetings }: Props) {
 
   return (
     <div>
+      {contextHolder}
       <AntCalendar className={styles.calendar} cellRender={cellRender} />
     </div>
   );

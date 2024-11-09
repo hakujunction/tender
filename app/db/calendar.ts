@@ -31,6 +31,7 @@ async function calendarTable() {
     date_start: timestamp("date_start"),
     date_end: timestamp("date_end"),
     created_at: timestamp("created_at"),
+    done: integer("done").$type<number>(),
   });
 }
 
@@ -41,6 +42,25 @@ type EventDTO = {
   type: EventType;
   date_start: number;
   date_end: number;
+}
+
+export async function toggleDone(eventId: number) {
+  const calendar = await calendarTable();
+  const [event] = await db.select().from(calendar).where(
+    and(
+      eq(calendar.id, eventId),
+    ),
+  );
+
+  if (!event) {
+    return;
+  }
+
+  await db.update(calendar).set({ done: event.done ? 0 : 1 }).where(
+    and(
+      eq(calendar.id, eventId),
+    ),
+  );
 }
 
 export async function addEvents(userId: number, events: EventDTO[]) {
