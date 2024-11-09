@@ -1,15 +1,13 @@
 "use server";
 
-import OpenAI from "openai";
+import {PdfReader} from "pdfreader";
+
+import {openai} from "app/ai"
 import {auth} from "app/auth";
 import {getSearchParams, updateSearchParams} from "app/db/user";
 import {addMessage, getChat} from "app/db/chat"
-import {PdfReader} from "pdfreader";
-import {readFileSync} from "fs";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const systemName = "Tender";
 
 export async function getMessages() {
   const session = await auth();
@@ -32,7 +30,13 @@ export async function answer(text: string, fileBase64: string) {
   const fileBuffer = fileBase64 ? Buffer.from(fileBase64.split(",")[1], "base64") : null;
   const searchParams = await getSearchParams(session.user.email);
 
-  await addMessage(session.user.email, session.user.email, text);
+  if (text.trim()) {
+    await addMessage(session.user.email, session.user.email, text);
+  }
+
+  if (fileBase64) {
+    await addMessage(session.user.email, session.user.email, `Uploaded file`);
+  }
 
   let resumeText
 
@@ -54,7 +58,7 @@ export async function answer(text: string, fileBase64: string) {
     }
 
     const messages: Array<{role: string, content: string}> = [
-      {"role": "system", "content": "Parse the following text and provide a JSON array of the skills mentioned in one line without markdown."},
+      {"role": "system", "content": "Parse the following text and provide a JSON array of the skills mentioned in one line strictly without markdown."},
       {"role": "user", "content": text}
     ];
 
@@ -68,8 +72,6 @@ export async function answer(text: string, fileBase64: string) {
       messages
     });
 
-    console.log(completion.choices[0].message.content);
-
     const skills = JSON.parse(completion.choices[0].message.content!);
 
     await updateSearchParams(session.user.email, {
@@ -77,26 +79,24 @@ export async function answer(text: string, fileBase64: string) {
       skills
     });
 
-    await addMessage(session.user.email, "system", `I have detected the following skills: ${skills.join(", ")}`);
+    await addMessage(session.user.email, systemName, `I have detected the following skills: ${skills.join(", ")}\n. Now let's move on to the next step. Could you please send me a brief description of your hobbies and interests?`);
 
   } else {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        {"role": "system", "content": "Parse the following text and return a JSON array of the relevant tags which is important for the developer: [career, money, health, relationships, sport, lifestyle]"},
+        {"role": "system", "content": "Parse the following text and return a JSON array of the relevant tags which is important for the developer: [career, money, health, relationships, sport, lifestyle, travel, education, technology, art, fashion, music, cooking, gardening, science, fitness, photography, books, movies, environment, spirituality, self-improvement, volunteering, parenting, DIY projects, gaming, outdoors, meditation, history, social media, entrepreneurship, investing, home decor, adventure, food & drink, pets] in one line strictly without markdown"},
         {"role": "user", "content": text}
       ]
     });
-
-    console.log(completion.choices[0].message.content);
 
     const tags = JSON.parse(completion.choices[0].message.content!);
 
     await updateSearchParams(session.user.email, {
       ...searchParams,
-      tags: JSON.parse(completion.choices[0].message.content!)
+      tags
     });
 
-    await addMessage(session.user.email, "system", `I have detected the following tags: ${tags.join(", ")}`);
+    await addMessage(session.user.email, systemName, `Cool! Thank you for sharing. <a href="/candidate/companies" style="color: #69b1ff;" target="_blank">I've found interesting positions for you</a>. Please check them out and apply if you are interested. 🤩`);
   }
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {MessageOutlined, CalendarOutlined, StarOutlined} from "@ant-design/icons";
 
 import { auth } from "../auth";
 import { User } from "../components/user";
@@ -19,8 +20,9 @@ export default async function CandidateLayout({ children }: { children: React.Re
         <User email={user.email ?? ""} />
 
         <div className={styles.menu}>
-          <Link href="/candidate/chat">Chat</Link>
-          <Link href="/candidate/calendar">Calendar</Link>
+          <Link href="/candidate/chat"><MessageOutlined /> Chat</Link>
+          <Link href="/candidate/recommendations"><StarOutlined /> Companies</Link>
+          <Link href="/candidate/calendar"><CalendarOutlined /> Calendar</Link>
         </div>
       </div>
       <div className={styles.content}>{children}</div>

@@ -18,7 +18,7 @@ export async function getChat(email: string) {
 export async function addMessage(email: string, from: string, text: string) {
   const users = await userTable();
   let chat = await getChat(email);
-  chat.push({ text, sender: email });
+  chat.push({ text, sender: from });
 
   await db.update(users).set({ chat_history: chat }).where(eq(users.email, email));
 }
