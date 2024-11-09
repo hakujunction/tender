@@ -71,7 +71,6 @@ const LandingPage = () => {
               </motion.div>
             </Col>
           </Row>
-
           <div className="text-center mt-8">
             <motion.div
               initial={{ scale: 1 }}
