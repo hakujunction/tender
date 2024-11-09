@@ -3,6 +3,7 @@
 import { Layout, Menu } from "antd";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const { Header: AntHeader } = Layout;
 
@@ -17,17 +18,9 @@ type Props = {
   avatar?: React.ReactNode;
 };
 
-const getPathname = (defaultPathname: string) => {
-  if (typeof window === "undefined") {
-    return defaultPathname;
-  }
-
-  return window.location.pathname;
-};
-
 export default function Header({ avatar, items }: Props) {
   const router = useRouter();
-  const pathname = getPathname(items[0].href);
+  const pathname = usePathname();
   const [selectedKey, setSelectedKey] = useState(pathname);
 
   const preparedItems = items.map((item) => ({
@@ -48,7 +41,7 @@ export default function Header({ avatar, items }: Props) {
         theme="dark"
         mode="horizontal"
         activeKey={selectedKey}
-        defaultActiveFirst
+        selectedKeys={[selectedKey]}
         items={preparedItems}
         style={{ flex: 1, minWidth: 0 }}
       />
