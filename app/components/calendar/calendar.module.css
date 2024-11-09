@@ -2,7 +2,7 @@
   display: none;
 }
 
-:global(.ant-picker-calendar-date-content) li {
+.calendar :global(.ant-picker-calendar-date-content) li {
   list-style: none;
 }
 
