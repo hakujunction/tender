@@ -32,6 +32,20 @@ const renderTextWithLinks = (text: string) => {
   });
 };
 
+const renderTextWithNewLines = (texts: Array<string | JSX.Element>) => {
+  return texts.reduce((acc: Array<string | JSX.Element>, text, index) => {
+    if (typeof text === "string") {
+      const strings = text.split("\n");
+      strings.forEach((string) => {
+        acc.push(string);
+      });
+    } else {
+      acc.push(text);
+    }
+    return acc;
+  }, []);
+};
+
 export default function Calendar({ meetings }: Props) {
   const [selectedMeeting, setSelectedMeeting] = useState<any | null>(null);
 
@@ -52,11 +66,12 @@ export default function Calendar({ meetings }: Props) {
     return meetingsOnDate.map((meeting) => {
       const meetingDate = dayjs(meeting.date_start);
       const time = meetingDate.format("HH:mm");
+
       return {
         id: meeting.id,
         type: meeting.type === 0 ? "warning" : "success",
         content: meeting.name,
-        description: renderTextWithLinks(meeting.description ?? ""),
+        description: renderTextWithNewLines(renderTextWithLinks(meeting.description ?? "")),
         time,
       };
     });
