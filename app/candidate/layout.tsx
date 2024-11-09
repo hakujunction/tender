@@ -1,5 +1,4 @@
-import Link from "next/link";
-import {MessageOutlined, CalendarOutlined, StarOutlined} from "@ant-design/icons";
+import { MessageOutlined, CalendarOutlined, StarOutlined } from "@ant-design/icons";
 
 import { auth } from "../auth";
 import styles from "./layout.module.css";

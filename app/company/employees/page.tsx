@@ -49,13 +49,13 @@ export default async function CompanyDashboard() {
   return (
     <div>
       <div style={{ paddingBottom: 20 }}>
-        <PieChart title="Employees skills" data={skills} />
-      </div>
-      <div style={{ paddingBottom: 20 }}>
         <PieChart title="Employees values" data={tags} />
       </div>
       <div style={{ paddingBottom: 20 }}>
         <PieChart title="Work/Life balance" data={workLifeBalanceMap} />
+      </div>
+      <div style={{ paddingBottom: 20 }}>
+        <PieChart title="Employees skills" data={skills} />
       </div>
     </div>
   );

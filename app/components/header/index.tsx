@@ -31,7 +31,7 @@ export default function Header({ avatar, items }: Props) {
   useEffect(() => {
     setSelectedKey(window.location.pathname);
   });
-  console.log(preparedItems, window.location.pathname, selectedKey);
+
   return (
     <AntHeader style={{ display: "flex", alignItems: "center", gap: 32 }}>
       {avatar}
