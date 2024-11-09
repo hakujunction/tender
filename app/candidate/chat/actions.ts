@@ -104,12 +104,17 @@ export async function answer(text: string, fileBase64: string) {
 
     await addMessage(session.user.email, systemName, `Cool! Thank you for sharing. <a href="/candidate/companies" style="color: #69b1ff;" target="_blank">I've found interesting positions for you</a>. Please check them out and apply if you are interested. 🤩`);
   } else {
+    const messages = await getChat(session.user.email);
+
+    const resultMessages = [
+        ...messages.map(({sender, text}) => ({role: sender === session.user?.email ? "user" : "system", content: text})) as any,
+        {"role": "user", "content": `You are talking with developer with the following properties: ${JSON.stringify(searchParams)}. Discuss only questions related to search of well-being companies and job opportunities and work-life balance. Use HTML markup always!!!`},
+        {"role": "user", "content": text}
+    ];
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
-      messages: [
-        {"role": "system", "content": `You are talking with developer with the following properties: ${JSON.stringify(searchParams)}. Discuss only questions related to search of well-being companies and job opportunities and work-life balance. Use HTML markup if needed`},
-        {"role": "user", "content": text}
-      ]
+      messages: resultMessages
     });
 
     await addMessage(session.user.email, systemName, completion.choices[0].message.content!);
