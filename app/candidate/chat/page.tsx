@@ -1,15 +1,16 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Button, Input, Layout, List, Space, Typography, Upload} from "antd";
 import {SendOutlined, UploadOutlined} from '@ant-design/icons';
 
 import {getMessages, answer} from "./actions";
-import { UploadChangeParam } from "antd/es/upload";
+import {UploadChangeParam} from "antd/es/upload";
 
 const systemName = "Tender";
 
 export default function ChatPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<{ text: string; sender: string }[]>([]);
   const [file, setFile] = useState<File | null>(null);
@@ -40,17 +41,23 @@ export default function ChatPage() {
           await answer(text, base64 as string);
           setMessages(await getMessages());
         }
+        setMessages(m => [...m, { text: "File uploaded", sender: "You" }]);
       } else {
         setText("");
+        setMessages(m => [...m, { text, sender: "You" }]);
         await answer(text, "");
         setMessages(await getMessages());
       }
     }
   }
 
+  useLayoutEffect(() => {
+    containerRef.current?.scrollTo(0, containerRef.current?.scrollHeight);
+  }, [messages]);
+
   return (
     <Layout style={{height: '100%'}}>
-      <Layout.Content style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
+      <Layout.Content style={{ padding: '20px', overflowY: 'auto', flex: 1 }} ref={containerRef}>
         <List
           split={false}
           dataSource={messages}

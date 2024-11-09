@@ -38,7 +38,7 @@ export async function answer(text: string, fileBase64: string) {
     await addMessage(session.user.email, session.user.email, `Uploaded file`);
   }
 
-  let resumeText
+  let resumeText;
 
   if (!searchParams.skills.length) {
     if (fileBuffer) {
@@ -81,7 +81,7 @@ export async function answer(text: string, fileBase64: string) {
 
     await addMessage(session.user.email, systemName, `I have detected the following skills: ${skills.join(", ")}\n. Now let's move on to the next step. Could you please send me a brief description of your hobbies and interests?`);
 
-  } else {
+  } else if (!searchParams.tags.length) {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
@@ -92,11 +92,26 @@ export async function answer(text: string, fileBase64: string) {
 
     const tags = JSON.parse(completion.choices[0].message.content!);
 
+    if (!tags.length) {
+      await addMessage(session.user.email, systemName, `Could you please provide me with more information?`);
+      return;
+    }
+
     await updateSearchParams(session.user.email, {
       ...searchParams,
       tags
     });
 
     await addMessage(session.user.email, systemName, `Cool! Thank you for sharing. <a href="/candidate/companies" style="color: #69b1ff;" target="_blank">I've found interesting positions for you</a>. Please check them out and apply if you are interested. 🤩`);
+  } else {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {"role": "system", "content": `You are talking with developer with the following properties: ${JSON.stringify(searchParams)}. Discuss only questions related to search of well-being companies and job opportunities and work-life balance. Use HTML markup if needed`},
+        {"role": "user", "content": text}
+      ]
+    });
+
+    await addMessage(session.user.email, systemName, completion.choices[0].message.content!);
   }
 }
