@@ -4,6 +4,8 @@ import { redirect } from 'next/navigation';
 import { createUser, getUser } from 'app/db';
 import { SubmitButton } from 'app/submit-button';
 
+import "./styles.css";
+
 export default function Login() {
   async function register(formData: FormData) {
     'use server';

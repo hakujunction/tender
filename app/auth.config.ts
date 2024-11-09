@@ -11,7 +11,7 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       let isLoggedIn = !!auth?.user;
-      let isIndexPage = nextUrl.pathname === '/';
+      let isIndexPage = nextUrl.pathname === '/' || nextUrl.pathname.includes('jpg');
       let isAuthPage = ['/login', '/register'].some((path) =>
         nextUrl.pathname.startsWith(path),
       );
