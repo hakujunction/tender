@@ -13,5 +13,9 @@ export default async function CalendarPage() {
   const user = await getUser(session.user.email);
   const meetings = await getMeetings(user.id);
 
-  return <Calendar meetings={meetings} />;
+  return (
+    <div style={{ padding: 16 }}>
+      <Calendar meetings={meetings} />
+    </div>
+  );
 }

@@ -16,8 +16,10 @@ export function User({ email }: { email: string }) {
   ];
 
   return (
-    <Dropdown menu={{items}} trigger={['click']} placement="bottomRight">
-      <Avatar style={{userSelect: "none"}}>{email[0]?.toUpperCase() ?? ""}</Avatar>
+    <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
+      <Avatar style={{ userSelect: "none", backgroundColor: "#ccc", color: "#000" }}>
+        {email[0]?.toUpperCase() ?? ""}
+      </Avatar>
     </Dropdown>
   );
 }

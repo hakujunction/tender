@@ -52,25 +52,31 @@ export default function RecommendationsPage() {
     <>
       {contextHolder}
       {companies.length > 0 ? <List
-        style={{padding: "24px"}}
+        style={{padding: "16px"}}
         loading={!isLoaded}
         dataSource={companies}
         renderItem={(item: any) => (
           <List.Item
             actions={[
-              !applicationsRef.current.has(Number(item.id)) ? <Button
-                key="Apply"
-                onClick={async () => {
-                  applicationsRef.current.add(Number(item.id));
-                  setIsApplying(true);
-                  await applyToCompany(item);
-                  openNotification("topRight");
-                  setIsApplying(false);
-                }}
-                disabled={isApplying}
-              >
-                Create roadmap to apply
-              </Button> : <Button key="Applied" disabled icon={<CheckOutlined />}>Applied</Button>,
+              !applicationsRef.current.has(Number(item.id)) ? (
+                <Button
+                  key="Apply"
+                  onClick={async () => {
+                    applicationsRef.current.add(Number(item.id));
+                    setIsApplying(true);
+                    await applyToCompany(item);
+                    openNotification("topRight");
+                    setIsApplying(false);
+                  }}
+                  disabled={isApplying}
+                >
+                  Create roadmap to apply
+                </Button>
+              ) : (
+                <Button key="Applied" disabled icon={<CheckOutlined />}>
+                  Applied
+                </Button>
+              ),
             ]}
           >
             <List.Item.Meta
