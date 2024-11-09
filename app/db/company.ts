@@ -17,6 +17,11 @@ type Company = {
   requirements: string;
 }
 
+export async function getAllCompanies() {
+  const companies = await companyTable();
+  return db.select().from(companies);
+}
+
 export async function insertCompanies(companies: Company[]) {
   const companiesTable = await companyTable();
   await db.insert(companiesTable).values(companies);

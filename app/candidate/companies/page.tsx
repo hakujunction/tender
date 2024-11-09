@@ -66,14 +66,15 @@ export default function RecommendationsPage() {
             <List.Item.Meta
               title={item.name}
               description={
-                <>
+                <div data-id={item.id}>
                   <p>
                     <AimOutlined /> {item.location}
                   </p>
                   <p>Industry: {item.industry}</p>
                   <p>Description: {item.description}</p>
                   <p>Requirements: {item.requirements}</p>
-                </>
+                  <p>Match percent: {item.match_percent}</p>
+                </div>
               }
             />
           </List.Item>

@@ -14,6 +14,11 @@ export async function getCompanyCandidates(companyId: number) {
   return candidates;
 }
 
+export async function insertCompanyCandidate(companyId: number, userId: number, matchPercent: number) {
+  const companyCandidates = await companyCandidateTable();
+  await db.insert(companyCandidates).values({ company_id: companyId, user_id: userId, match_percent: matchPercent });
+}
+
 export async function companyCandidateTable() {
   return pgTable("CompanyCandidate", {
     id: serial("id").primaryKey(),
