@@ -104,7 +104,7 @@ export async function applyToCompany(company: any) {
     messages: [
       {"role": "system", "content": `User applies to company ${JSON.stringify(company)}. Generate 5 events starting from ${new Date().toLocaleDateString()} in JSON strictly in one JSON per line with list of events for roadmap to prepare for interview in format: {"date_start": "unix timestamp", "date_end", "name": "Event name", "description": "Event description with steps and usefull links"}.`},
       {"role": "user", "content": `I have ${eventsIntervals.length} events in my calendar: ${JSON.stringify(eventsIntervals)}.`},
-      {"role": "user", "content": `Please create them in between 8 am and 8 pm. And print strictly only JSON inline one per line without markdown like \`\`\`json.`},
+      {"role": "user", "content": `Please create them in between 8 am and 8 pm and only in the future. And print strictly only JSON inline one per line without markdown like \`\`\`json.`},
     ]
   });
 
