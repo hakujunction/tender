@@ -22,7 +22,7 @@ export default function RecommendationsPage() {
         dataSource={companies}
         renderItem={(item: any) => (
           <List.Item actions={[
-            <Button>Apply</Button>
+            <Button key="Apply">Apply</Button>
           ]}>
             <List.Item.Meta
               title={item.name}
