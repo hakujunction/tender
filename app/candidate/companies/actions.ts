@@ -27,7 +27,12 @@ export async function getCompanies() {
     ]
   });
 
-  const companies = completion.choices[0].message.content!.split("\n").map((line: string) => JSON.parse(line));
+  const companies = completion.choices[0].message.content!.split("\n").map((line: string) => JSON.parse(line)).map((company: any, idx: number) => {
+    return {
+      ...company,
+      name: `Company ${idx + 1}`,
+    }
+  });
 
   await setUserCompanies(session.user.email, companies);
 
