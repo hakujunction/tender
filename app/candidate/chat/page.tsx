@@ -1,11 +1,11 @@
 "use client";
 
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
-import {Button, Input, Layout, List, Space, Typography, Upload} from "antd";
-import {SendOutlined, UploadOutlined} from '@ant-design/icons';
+import { Button, Input, Layout, List, Space, Spin, Typography, Upload } from "antd";
+import { LoadingOutlined, SendOutlined, UploadOutlined } from "@ant-design/icons";
 
-import {getMessages, answer} from "./actions";
-import {UploadChangeParam} from "antd/es/upload";
+import { getMessages, answer } from "./actions";
+import { UploadChangeParam } from "antd/es/upload";
 
 const systemName = "Tender";
 
@@ -14,7 +14,8 @@ export default function ChatPage() {
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<{ text: string; sender: string }[]>([]);
   const [file, setFile] = useState<File | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAnswering, setIsAnswering] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
@@ -28,7 +29,7 @@ export default function ChatPage() {
     if (e.file) {
       setFile(e.file as any);
     }
-  }
+  };
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
@@ -43,68 +44,89 @@ export default function ChatPage() {
           setFile(null);
           await answer(text, base64 as string);
           setMessages(await getMessages());
-        }
-        setMessages(m => [...m, { text: "File uploaded", sender: "You" }]);
+        };
+        setMessages((m) => [...m, { text: "File uploaded", sender: "You" }]);
       } else {
         setText("");
-        setMessages(m => [...m, { text, sender: "You" }]);
+        setMessages((m) => [...m, { text, sender: "You" }]);
+        setIsAnswering(true);
         await answer(text, "");
+        setIsAnswering(false);
         setMessages(await getMessages());
       }
     }
-  }
+  };
 
   useLayoutEffect(() => {
     containerRef.current?.scrollTo(0, containerRef.current?.scrollHeight);
   }, [messages]);
 
   return (
-    <Layout style={{height: '100%'}}>
-      <Layout.Content style={{ padding: '20px', overflowY: 'auto', flex: 1 }} ref={containerRef}>
-        <List
-          split={false}
-          dataSource={messages}
-          renderItem={(item) => (
-            <List.Item
-              style={{
-                display: 'flex',
-                justifyContent: item.sender !== systemName ? 'flex-end' : 'flex-start',
-                marginBottom: '10px',
-              }}
-            >
-              <List.Item.Meta
-                title={<Typography.Text strong>{item.sender}</Typography.Text>}
-                description={
-                  <div
-                    style={{
-                      backgroundColor: item.sender !== systemName ? '#e6f7ff' : '#fafafa',
-                      padding: '10px 15px',
-                      borderRadius: '15px',
-                      maxWidth: '50%'
-                    }}
-                  >
-                    <div dangerouslySetInnerHTML={{__html: item.text}} />
-                  </div>
-                }
-              />
-            </List.Item>
-          )}
-        />
+    <Layout style={{ height: "100%" }}>
+      <Layout.Content
+        style={{ padding: "20px", overflowY: "auto", flex: 1, height: "100%" }}
+        ref={containerRef}
+      >
+        {messages.length > 0 ? (
+          <List
+            loading={isLoading}
+            split={false}
+            dataSource={messages}
+            renderItem={(item) => (
+              <List.Item
+                style={{
+                  display: "flex",
+                  justifyContent: item.sender !== systemName ? "flex-end" : "flex-start",
+                  marginBottom: "10px",
+                }}
+              >
+                <List.Item.Meta
+                  title={<Typography.Text strong>{item.sender}</Typography.Text>}
+                  description={
+                    <div
+                      style={{
+                        backgroundColor: item.sender !== systemName ? "#e6f7ff" : "#fafafa",
+                        padding: "10px 15px",
+                        borderRadius: "15px",
+                        maxWidth: "50%",
+                      }}
+                    >
+                      <div dangerouslySetInnerHTML={{ __html: item.text }} />
+                    </div>
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <Spin />
+          </div>
+        )}
+        {isAnswering && <div>Answering...</div>}
       </Layout.Content>
-      <Layout.Footer style={{ padding: '10px', background: '#f0f2f5' }}>
+      <Layout.Footer style={{ padding: "10px", background: "#f0f2f5" }}>
         <form onSubmit={onSubmit}>
-          <Space.Compact style={{ display: 'flex' }}>
+          <Space.Compact style={{ display: "flex" }}>
             <Input
               placeholder="Type a message..."
               value={text}
               onChange={(e) => setText(e.target.value)}
               onPressEnter={(e) => onSubmit(e)}
               style={{ flex: 1 }}
+              disabled={isLoading || isAnswering}
             />
             <Upload onChange={onFileChange} beforeUpload={() => false} showUploadList={false}>
-              <Button icon={<UploadOutlined />}>{file ? file.name : "Upload"}</Button>
+              <Button disabled={isLoading || isAnswering} icon={<UploadOutlined />}>{file ? file.name : "Upload"}</Button>
             </Upload>
-            <Button icon={<SendOutlined />} onClick={(e) => onSubmit(e)}>
+            <Button icon={<SendOutlined />} onClick={(e) => onSubmit(e)} disabled={isLoading || isAnswering}>
               Send
             </Button>
           </Space.Compact>
