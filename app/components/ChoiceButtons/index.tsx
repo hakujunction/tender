@@ -15,7 +15,7 @@ const itemStyle = {
   fontSize: '18px', // Размер шрифта
   paddingBottom: '10px', // Отступ снизу для каждого пункта
   lineHeight: '1.6', // Межстрочный интервал
-  textAlign: 'left',
+  textAlign: 'left' as const,
   color: 'white', // Белый текст
 };
 const markerStyle = {
@@ -26,11 +26,11 @@ const GradientList = ({data}: {data:  string[]}) => {
     <div style={listStyle}>
       <ul className={styles.gl} style={markerStyle}>
         {data.map((item, index) => (
-          <li key={index} 
-          
-          style={itemStyle}>
+          <li key={index}
+
+            style={itemStyle}>
             {item}
-          </li> 
+          </li>
         ))}
       </ul>
     </div>
@@ -57,7 +57,7 @@ const ChoiceButtons = () => {
         }}
       >
         <div style={{ textAlign: 'center', width: '100%', display: 'flex', 'alignItems': 'top',     justifyContent: 'center' }}>
-          <div 
+          <div
         style={{
           width: '350',
           color: 'white',
@@ -94,13 +94,13 @@ const ChoiceButtons = () => {
         }}
       >
      <div style={{ textAlign: 'center', width: '100%', display: 'flex', 'alignItems': 'top',     justifyContent: 'center' }}>
-        <div 
+        <div
       style={{
         width: '350px',
           paddingTop: '50px'
       }}
       >
-         
+
         <Title  style={{ textAlign: 'center', color: '#fff'}} level={2}>For Companies</Title>
         <Paragraph className="text-gray-300"  style={{fontSize: '18px', marginTop: '-6px'}}>Empower your company wellbeing culture</Paragraph>
             <>
@@ -111,10 +111,10 @@ const ChoiceButtons = () => {
                   'Get candidate list',
                 ]}
               />
-              
+
             </>
-           
-   
+
+
           <Button size='large' href='/candidate/chat'  type="primary" style={{width: '100%'}}>Try Demo</Button>
         </div>
         </div>
