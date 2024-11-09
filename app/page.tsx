@@ -74,7 +74,7 @@ const AppLandingPage = () => {
           <Col span={12} style={{ textAlign: 'center' }}>
             <Title level={2}>Create Your Profile</Title>
             <Text>
-              Let's get to know you! Add your skills or upload your resume to help us find the best matches for you.
+              Let&apos;s get to know you! Add your skills or upload your resume to help us find the best matches for you.
             </Text>
             <br />
             <Link href="/candidate/chat">
