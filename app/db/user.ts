@@ -27,6 +27,7 @@ export async function userTable() {
     search_params: json("search_params").$type<UserSearchParams>(),
     chat_history: json("chat_history"),
     companies: json("companies").$type<UserCompany[]>(),
+    avatar: varchar("avatar", { length: 256 }),
   });
 }
 

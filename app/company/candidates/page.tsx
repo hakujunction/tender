@@ -6,10 +6,11 @@ export default async function CompanyCandidates() {
   const candidates = await getCompanyCandidates(1);
 
   const candidatesList = candidates.map((candidate) => ({
-    id: Number(candidate.CompanyCandidate.id),
+    id: candidate.CompanyCandidate.id,
     email: candidate.User?.email ?? "",
     description: "",
     match: candidate.CompanyCandidate.match_percent ?? 0,
+    avatar: candidate.User?.avatar ?? null,
   }));
 
   return (
