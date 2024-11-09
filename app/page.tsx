@@ -49,9 +49,9 @@ const AppLandingPage = () => {
                 }}>
                 Find the Right Fit for You: <br/> Where Values and Careers Align
                 </h1>
-                <p className="text-gray-300 text-lg sm:text-xl mb-8">
+               {/* <p className="text-gray-300 text-lg sm:text-xl mb-8">
                 Join us to open a job where your values, lifestyle and mental health come first.
-                </p>
+                </p> */}
             </div>
        </div>
        </Col>

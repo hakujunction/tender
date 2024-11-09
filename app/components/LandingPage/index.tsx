@@ -11,7 +11,7 @@ const LandingPage = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}>
-      <div className="container mx-auto py-16 px-4">
+      <div className="container mx-auto py-4 px-4">
         {/* First Block for Candidates */}
         <section className="mb-16">
           <motion.div
