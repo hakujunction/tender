@@ -2,10 +2,12 @@
 
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import { Button, Input, Layout, List, Space, Spin, Typography, Upload } from "antd";
-import { LoadingOutlined, SendOutlined, UploadOutlined } from "@ant-design/icons";
+import { SendOutlined, UploadOutlined } from "@ant-design/icons";
 
 import { getMessages, answer } from "./actions";
 import { UploadChangeParam } from "antd/es/upload";
+
+import styles from "./chat.module.css";
 
 const systemName = "Tender";
 
@@ -61,6 +63,9 @@ export default function ChatPage() {
     containerRef.current?.scrollTo(0, containerRef.current?.scrollHeight);
   }, [messages]);
 
+  const isFileUploaded =
+    isLoading || !messages.length ? true : messages.some((m) => m.text === "Uploaded file");
+
   return (
     <Layout style={{ height: "100%" }}>
       <Layout.Content
@@ -69,11 +74,13 @@ export default function ChatPage() {
       >
         {messages.length > 0 ? (
           <List
+            className={styles.list}
             loading={isLoading}
             split={false}
             dataSource={messages}
             renderItem={(item) => (
               <List.Item
+                className={item.sender === systemName ? styles.system : styles.you}
                 style={{
                   display: "flex",
                   justifyContent: item.sender !== systemName ? "flex-end" : "flex-start",
@@ -81,14 +88,26 @@ export default function ChatPage() {
                 }}
               >
                 <List.Item.Meta
-                  title={<Typography.Text strong>{item.sender}</Typography.Text>}
+                  title={
+                    <Typography.Text
+                      strong
+                      style={{
+                        display: "flex",
+                        justifyContent: item.sender !== systemName ? "flex-end" : "flex-start",
+                      }}
+                    >
+                      {item.sender === systemName ? systemName : "You"}
+                    </Typography.Text>
+                  }
                   description={
                     <div
+                      className={styles.description}
                       style={{
-                        backgroundColor: item.sender !== systemName ? "#e6f7ff" : "#fafafa",
+                        backgroundColor: item.sender !== systemName ? "#b4e6fd" : "#fafafa",
                         padding: "10px 15px",
                         borderRadius: "15px",
                         maxWidth: "50%",
+                        textAlign: item.sender !== systemName ? "right" : "left",
                       }}
                     >
                       <div dangerouslySetInnerHTML={{ __html: item.text }} />
@@ -114,7 +133,7 @@ export default function ChatPage() {
       </Layout.Content>
       <Layout.Footer style={{ padding: "10px", background: "#f0f2f5" }}>
         <form onSubmit={onSubmit}>
-          <Space.Compact style={{ display: "flex" }}>
+          <div className={styles.footer}>
             <Input
               placeholder="Type a message..."
               value={text}
@@ -123,13 +142,23 @@ export default function ChatPage() {
               style={{ flex: 1 }}
               disabled={isLoading || isAnswering}
             />
-            <Upload onChange={onFileChange} beforeUpload={() => false} showUploadList={false}>
-              <Button disabled={isLoading || isAnswering} icon={<UploadOutlined />}>{file ? file.name : "Upload"}</Button>
-            </Upload>
-            <Button icon={<SendOutlined />} onClick={(e) => onSubmit(e)} disabled={isLoading || isAnswering}>
+            {!isFileUploaded && (
+              <Upload onChange={onFileChange} beforeUpload={() => false} showUploadList={false}>
+                <Button disabled={isLoading || isAnswering} icon={<UploadOutlined />}>
+                  {file ? file.name : "Upload CV"}
+                </Button>
+              </Upload>
+            )}
+            <Button
+              icon={<SendOutlined />}
+              onClick={(e) => onSubmit(e)}
+              disabled={isLoading || isAnswering}
+              color="primary"
+              type="primary"
+            >
               Send
             </Button>
-          </Space.Compact>
+          </div>
         </form>
       </Layout.Footer>
     </Layout>

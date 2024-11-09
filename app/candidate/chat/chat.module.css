@@ -1,0 +1,17 @@
+.list .you :global(.ant-list-item-meta-description) {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.list .description {
+  box-shadow: 9px 8px 18px -20px rgba(0, 0, 0, 0.75);
+}
+
+.list .you .description {
+  box-shadow: -11px 4px 20px -13px rgba(0, 0, 0, 0.75);
+}
+
+.footer {
+  display: flex;
+  gap: 10px;
+}
