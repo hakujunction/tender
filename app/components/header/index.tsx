@@ -41,6 +41,7 @@ export default function Header({ avatar, items }: Props) {
         alignItems: "center",
         gap: 32,
         position: "sticky",
+        boxSizing: "border-box",
         top: 0,
         zIndex: 1,
         width: "100%",

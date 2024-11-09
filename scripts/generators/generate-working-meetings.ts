@@ -100,9 +100,9 @@ const generateMeetings = (date: Dayjs, userId: number) => {
     startDate = startDate.add(1, "day");
   }
 
-  const csvHeader = "user_id,name,date_start,date_end";
+  const csvHeader = "user_id,name,date_start,date_end,type";
   const csvData = meetings
-    .map((meeting) => `${meeting.userId},${meeting.name},${meeting.dateStart},${meeting.dateEnd}`)
+    .map((meeting) => `${meeting.userId},${meeting.name},${meeting.dateStart},${meeting.dateEnd},0`)
     .join("\n");
 
   console.log(csvHeader);
