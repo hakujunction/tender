@@ -1,9 +1,8 @@
 "use client";
 import {useEffect, useState} from "react";
 import {AimOutlined} from "@ant-design/icons";
-import {Button, Layout, List} from "antd";
+import {Button, List} from "antd";
 
-import Title from "antd/lib/typography/Title";
 import {Content} from "antd/lib/layout/layout";
 import {getCompanies} from "./actions";
 

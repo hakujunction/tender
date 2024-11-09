@@ -11,12 +11,12 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       let isLoggedIn = !!auth?.user;
-      let isIndexPage = nextUrl.pathname === '/' || nextUrl.pathname.includes('jpg');
+      let isAnonymPage = nextUrl.pathname === '/' || nextUrl.pathname.includes('jpg');
       let isAuthPage = ['/login', '/register'].some((path) =>
         nextUrl.pathname.startsWith(path),
       );
 
-      if (isIndexPage) return true;
+      if (isAnonymPage) return true;
       if (!isAuthPage) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page

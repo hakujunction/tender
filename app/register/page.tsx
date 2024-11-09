@@ -13,7 +13,7 @@ export default function Login() {
     let password = formData.get('password') as string;
     let user = await getUser(email);
 
-    if (!user) {
+    if (user) {
       return "User already exists"; // TODO: Handle errors with useFormStatus
     } else {
       await createUser(email, password);
