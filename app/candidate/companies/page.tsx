@@ -1,5 +1,5 @@
 import {AimOutlined} from "@ant-design/icons";
-import {Layout, Button} from "antd";
+import {Button} from "antd";
 
 import {auth} from "app/auth";
 import {openai} from "app/ai";
