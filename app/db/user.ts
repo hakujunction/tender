@@ -26,6 +26,7 @@ export async function userTable() {
     password: varchar("password", { length: 64 }),
     search_params: json("search_params").$type<UserSearchParams>(),
     chat_history: json("chat_history"),
+    companies: json("companies").$type<UserCompany[]>(),
   });
 }
 
@@ -53,6 +54,41 @@ export async function getSearchParams(email: string): Promise<SearchParams> {
 
   return user.search_params as SearchParams;
 }
+
+type UserCompany = {
+  name: string,
+  location: string,
+  industry: string,
+  size: string,
+  description: string,
+  requirements: string
+}
+
+export async function getUserCompanies(email: string) {
+  const users = await userTable();
+  const [user] = await db
+    .select({
+      companies: users.companies,
+    })
+    .from(users)
+    .where(eq(users.email, email));
+
+  if (!user) {
+    return [];
+  }
+
+  if (!user.companies) {
+    return [];
+  }
+
+  return user.companies;
+}
+
+export async function setUserCompanies(email: string, companies: UserCompany[]) {
+  const users = await userTable();
+  await db.update(users).set({ companies }).where(eq(users.email, email));
+}
+
 
 export async function updateSearchParams(email: string, searchParams: SearchParams) {
   const users = await userTable();

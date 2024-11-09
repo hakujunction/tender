@@ -1,6 +1,6 @@
 "use server";
 import { openai } from "app/ai";
-import {getSearchParams, getUser} from "app/db/user";
+import {getSearchParams, getUser, getUserCompanies, setUserCompanies} from "app/db/user";
 import {auth} from "app/auth";
 import { addEvents, getAllEvents } from "app/db";
 
@@ -9,6 +9,12 @@ export async function getCompanies() {
 
   if (!session?.user?.email) {
     return [];
+  }
+
+  const dbCompanies = await getUserCompanies(session.user.email);
+
+  if (dbCompanies.length > 0) {
+    return dbCompanies;
   }
 
   const searchParams = await getSearchParams(session.user.email);
@@ -21,8 +27,11 @@ export async function getCompanies() {
     ]
   });
 
-  return completion.choices[0].message.content!.split("\n").map((line: string) => JSON.parse(line));
+  const companies = completion.choices[0].message.content!.split("\n").map((line: string) => JSON.parse(line));
 
+  await setUserCompanies(session.user.email, companies);
+
+  return companies;
 }
 
 type Company = {
