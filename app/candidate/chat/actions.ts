@@ -108,7 +108,7 @@ export async function answer(text: string, fileBase64: string) {
 
     const resultMessages = [
         ...messages.map(({sender, text}) => ({role: sender === session.user?.email ? "user" : "system", content: text})) as any,
-        {"role": "user", "content": `You are talking with developer with the following properties: ${JSON.stringify(searchParams)}. Discuss only questions related to search of well-being companies and job opportunities and work-life balance. Use HTML markup always!!!`},
+        {"role": "user", "content": `You are talking with developer with the following properties: ${JSON.stringify(searchParams)}. Discuss only questions related to search of well-being companies and job opportunities and work-life balance. Use HTML markup always!!! Please don't mention another services for job search.`},
         {"role": "user", "content": text}
     ];
 
