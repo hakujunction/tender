@@ -1,7 +1,8 @@
 "use client";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {
   AimOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import {Button, List, notification} from "antd";
 
@@ -13,6 +14,7 @@ import type { NotificationArgsProps } from "antd";
 type NotificationPlacement = NotificationArgsProps['placement'];
 
 export default function RecommendationsPage() {
+  const applicationsRef = useRef(new Set<number>());
   const [isLoaded, setIsLoaded] = useState(false);
   const [companies, setCompanies] = useState<any[]>([]);
   const [api, contextHolder] = notification.useNotification();
@@ -33,11 +35,17 @@ export default function RecommendationsPage() {
     });
   };
 
+  const fetchCompanies = async () => {
+    const {companies, applications} = await getCompanies();
+    applications.forEach((application: any) => {
+      applicationsRef.current.add(application.company_id);
+    });
+    setCompanies(companies);
+    setIsLoaded(true);
+  }
+
   useEffect(() => {
-    (async () => {
-      setCompanies(await getCompanies());
-      setIsLoaded(true);
-    })();
+    fetchCompanies();
   }, []);
 
   return (
@@ -49,9 +57,10 @@ export default function RecommendationsPage() {
         renderItem={(item: any) => (
           <List.Item
             actions={[
-              <Button
+              !applicationsRef.current.has(Number(item.id)) ? <Button
                 key="Apply"
                 onClick={async () => {
+                  applicationsRef.current.add(Number(item.id));
                   setIsApplying(true);
                   await applyToCompany(item);
                   openNotification("topRight");
@@ -60,7 +69,7 @@ export default function RecommendationsPage() {
                 disabled={isApplying}
               >
                 Create roadmap to apply
-              </Button>,
+              </Button> : <Button key="Applied" disabled icon={<CheckOutlined />}>Applied</Button>,
             ]}
           >
             <List.Item.Meta

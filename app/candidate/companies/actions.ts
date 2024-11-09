@@ -2,16 +2,19 @@
 import { openai } from "app/ai";
 import {getSearchParams, getUser, setUserCompanies} from "app/db/user";
 import {auth} from "app/auth";
-import { addEvents, getAllCompanies, getAllEvents, insertCompanies, insertCompanyCandidate } from "app/db";
+import { addEvents, getAllCompanies, getAllEvents, getAppliedCompanies, insertCompanies, insertCompanyCandidate } from "app/db";
 
 export async function getCompanies() {
   const session = await auth();
 
   if (!session?.user?.email) {
-    return [];
+    return {companies: [], applications: []};
   }
 
+  const user = await getUser(session.user.email);
+
   const dbCompanies = await getAllCompanies();
+  const applications = await getAppliedCompanies(user.id);
   const searchParams = await getSearchParams(session.user.email);
 
   const completion = await openai.chat.completions.create({
@@ -30,7 +33,7 @@ export async function getCompanies() {
     }
   });
 
-  return companies;
+  return {companies, applications};
 }
 
 type Company = {

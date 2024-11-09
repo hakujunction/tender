@@ -14,6 +14,15 @@ export async function getCompanyCandidates(companyId: number) {
   return candidates;
 }
 
+export async function getAppliedCompanies(userId: number) {
+  const companyCandidates = await companyCandidateTable();
+  const companies = await db
+    .select()
+    .from(companyCandidates)
+    .where(eq(companyCandidates.user_id, userId));
+  return companies;
+}
+
 export async function insertCompanyCandidate(companyId: number, userId: number, matchPercent: number) {
   const companyCandidates = await companyCandidateTable();
   await db.insert(companyCandidates).values({ company_id: companyId, user_id: userId, match_percent: matchPercent });
