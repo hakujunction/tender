@@ -1,76 +1,99 @@
-import Link from 'next/link';
+"use client";
+import React from 'react';
+import { Layout, Menu, Button, Row, Col, Card, Typography, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import Link from 'antd/es/typography/Link';
 
-export default function Page() {
+const { Header, Content, Footer } = Layout;
+const { Title, Text } = Typography;
+
+const AppLandingPage = () => {
   return (
-    <div className="flex h-screen bg-black">
-      <div className="w-screen h-screen flex flex-col justify-center items-center">
-        <svg
-          width="283"
-          height="64"
-          viewBox="0 0 283 64"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-36 h-36"
-          aria-label="Vercel logo"
-        >
-          <path
-            d="M141.04 16c-11.04 0-19 7.2-19 18s8.96 18 20 18c6.67 0 12.55-2.64 16.19-7.09l-7.65-4.42c-2.02 2.21-5.09 3.5-8.54 3.5-4.79 0-8.86-2.5-10.37-6.5h28.02c.22-1.12.35-2.28.35-3.5 0-10.79-7.96-17.99-19-17.99zm-9.46 14.5c1.25-3.99 4.67-6.5 9.45-6.5 4.79 0 8.21 2.51 9.45 6.5h-18.9zM248.72 16c-11.04 0-19 7.2-19 18s8.96 18 20 18c6.67 0 12.55-2.64 16.19-7.09l-7.65-4.42c-2.02 2.21-5.09 3.5-8.54 3.5-4.79 0-8.86-2.5-10.37-6.5h28.02c.22-1.12.35-2.28.35-3.5 0-10.79-7.96-17.99-19-17.99zm-9.45 14.5c1.25-3.99 4.67-6.5 9.45-6.5 4.79 0 8.21 2.51 9.45 6.5h-18.9zM200.24 34c0 6 3.92 10 10 10 4.12 0 7.21-1.87 8.8-4.92l7.68 4.43c-3.18 5.3-9.14 8.49-16.48 8.49-11.05 0-19-7.2-19-18s7.96-18 19-18c7.34 0 13.29 3.19 16.48 8.49l-7.68 4.43c-1.59-3.05-4.68-4.92-8.8-4.92-6.07 0-10 4-10 10zm82.48-29v46h-9V5h9zM36.95 0L73.9 64H0L36.95 0zm92.38 5l-27.71 48L73.91 5H84.3l17.32 30 17.32-30h10.39zm58.91 12v9.69c-1-.29-2.06-.49-3.2-.49-5.81 0-10 4-10 10V51h-9V17h9v9.2c0-5.08 5.91-9.2 13.2-9.2z"
-            fill="white"
-          />
-        </svg>
-        <div className="text-center max-w-screen-sm mb-10">
-          <h1 className="text-stone-200 font-bold text-2xl">
-            Next.js + Postgres Auth Starter
-          </h1>
-          <p className="text-stone-400 mt-5">
-            This is a{' '}
-            <a
-              href="https://nextjs.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-stone-400 underline hover:text-stone-200 transition-all"
-            >
-              Next.js
-            </a>{' '}
-            starter kit that uses{' '}
-            <a
-              href="https://next-auth.js.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-stone-400 underline hover:text-stone-200 transition-all"
-            >
-              NextAuth.js
-            </a>{' '}
-            for simple email + password login and a{' '}
-            <a
-              href="https://vercel.com/postgres"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-stone-400 underline hover:text-stone-200 transition-all"
-            >
-              Postgres
-            </a>{' '}
-            database to persist the data.
-          </p>
-        </div>
-        <div className="flex space-x-3">
-          <Link
-            href="/protected"
-            className="text-stone-400 underline hover:text-stone-200 transition-all"
-          >
-            Protected Page
-          </Link>
-          <p className="text-white">·</p>
-          <a
-            href="https://vercel.com/templates/next.js/prisma-postgres-auth-starter"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-stone-400 underline hover:text-stone-200 transition-all"
-          >
-            Deploy to Vercel
-          </a>
-        </div>
-      </div>
-    </div>
+    <Layout>
+      {/* Header */}
+      <Header style={{ position: 'fixed', width: '100%', zIndex: 1 }}>
+        <div className="logo" style={{ float: 'left', color: '#fff', fontSize: 24, paddingRight: '48px' }}>Tender</div>
+        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+          <Menu.Item key="1"><Link href="#home">Home</Link></Menu.Item>
+          <Menu.Item key="2"><Link href="#features">Features</Link></Menu.Item>
+          <Menu.Item key="3"><Link href="#get-started">Get Started</Link></Menu.Item>
+        </Menu>
+      </Header>
+
+      {/* Main Content */}
+      <a id="home" />
+      <Content style={{ padding: '50px 50px', marginTop: 64 }}>
+        {/* Hero Section */}
+        <Row justify="center" align="middle" style={{
+          minHeight: '60vh',
+          backgroundImage: 'url("/hero.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backdropFilter: 'blur(5px)',
+          color: '#fff',
+          textAlign: 'center',
+          padding: '60px 20px'
+        }}>
+          <Col span={12}>
+            <Title level={1} style={{color: 'white'}}>Find Your Perfect Fit</Title>
+            <Text style={{color: 'white'}}>
+              Connect with companies that share your interests and values. Let us help you discover career opportunities that align with both your professional and personal passions.
+            </Text>
+            <br />
+            <Link href="/candidate/chat">
+              <Button type="primary" size="large" style={{ marginTop: 16 }}>
+                Get Started
+              </Button>
+            </Link>
+          </Col>
+        </Row>
+
+        {/* Features Section */}
+        <a id="features" />
+        <Row gutter={16} style={{ marginTop: 32 }}>
+          <Col span={8}>
+            <Card title="Personalized Matches" bordered={false}>
+              Discover companies that align with your interests and values, making it easy to find a workplace where you’ll feel at home.
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title="Skill Roadmaps" bordered={false}>
+              Follow customized learning paths to build the skills needed for your next career step, with milestones to guide your journey.
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title="Calendar Integration" bordered={false}>
+              Schedule learning sessions directly into your calendar, ensuring you stay on track with your career growth.
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Profile Setup Section */}
+        <a id="get-started" />
+        <Row justify="center" style={{ marginTop: 64 }}>
+          <Col span={12} style={{ textAlign: 'center' }}>
+            <Title level={2}>Create Your Profile</Title>
+            <Text>
+              Let's get to know you! Add your skills or upload your resume to help us find the best matches for you.
+            </Text>
+            <br />
+            <Link href="/candidate/chat">
+              <Button type="primary" style={{ marginTop: 16 }}>Add Skills</Button>
+            </Link>
+            <br />
+            <Link href="/candidate/chat">
+              <Button icon={<UploadOutlined />} style={{ marginTop: 8 }}>Upload Resume (PDF)</Button>
+            </Link>
+          </Col>
+        </Row>
+      </Content>
+
+      {/* Footer */}
+      <Footer style={{ textAlign: 'center' }}>
+        &copy; 2024 Created with ❤️ by Frontend Youth
+      </Footer>
+    </Layout>
   );
-}
+};
+
+export default AppLandingPage;

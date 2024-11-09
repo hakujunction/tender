@@ -11,7 +11,11 @@
   gap: 16px;
 }
 
+.menu a {
+  color: #333;
+  text-decoration: none;
+}
+
 .content {
   height: calc(100vh - 64px);
-  padding: 16px;
 }

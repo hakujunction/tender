@@ -21,7 +21,7 @@ export default async function CandidateLayout({ children }: { children: React.Re
 
         <div className={styles.menu}>
           <Link href="/candidate/chat"><MessageOutlined /> Chat</Link>
-          <Link href="/candidate/recommendations"><StarOutlined /> Companies</Link>
+          <Link href="/candidate/companies"><StarOutlined /> Companies</Link>
           <Link href="/candidate/calendar"><CalendarOutlined /> Calendar</Link>
         </div>
       </div>
