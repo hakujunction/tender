@@ -2,7 +2,7 @@
 import { openai } from "app/ai";
 import {getSearchParams, getUser, getUserCompanies, setUserCompanies} from "app/db/user";
 import {auth} from "app/auth";
-import { addEvents, getAllEvents } from "app/db";
+import { addEvents, getAllEvents, insertCompanies } from "app/db";
 
 export async function getCompanies() {
   const session = await auth();
@@ -22,7 +22,7 @@ export async function getCompanies() {
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
-      {"role": "system", "content": `Generate a list of 10 companies that match the provided information about candidate in strict one-line JSON format one JSON per line without any additional symbols: {"name": "Company Name", "location": "City, Country", "industry": "Industry", "size": "Size", "description": "Long enough description", "requirements": "Requirements"}.`},
+      {"role": "user", "content": `Generate a list of 10 companies that match the provided information about candidate in strict one-line JSON format one JSON per line without any additional symbols: {"name": "Company Name", "location": "City, Country", "industry": "Industry", "size": "Size", "description": "Long enough description", "requirements": "Requirements", "tags": ["health", "pets", "etc"], "skills": ["C#", "Unity", "etc"]}`},
       {"role": "user", "content": `I have ${searchParams.skills.length} skills: ${searchParams.skills.join(", ")}. I have the following interests: ${searchParams.tags.join(', ')}.`},
     ]
   });
