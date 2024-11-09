@@ -19,7 +19,7 @@ export const {
         }
 
         if (email === "demo@demo.com" && password === "demo") {
-          return true;
+          return company;
         }
 
         return null as any;

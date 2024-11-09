@@ -11,6 +11,7 @@
     "@aws-sdk/client-s3": "^3.688.0",
     "@fontsource/roboto": "^5.1.0",
     "@googleapis/calendar": "^9.7.9",
+    "@nivo/pie": "^0.87.0",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
