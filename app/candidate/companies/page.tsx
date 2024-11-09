@@ -44,7 +44,7 @@ export default function RecommendationsPage() {
             <Button key="Apply" onClick={async () => {
               await applyToCompany(item);
               openNotification('topRight');
-            }}>Apply</Button>
+            }}>Create roadmap to apply</Button>
           ]}>
             <List.Item.Meta
               title={item.name}
