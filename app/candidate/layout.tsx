@@ -11,7 +11,7 @@ export default async function CandidateLayout({ children }: { children: React.Re
   const user = await getUser();
 
   return (
-    <AuthServerProvider redirectUrl="/login" auth={auth} isCompany={false}>
+    <AuthServerProvider redirectUrl="/login" auth={auth}>
       <div className={styles.header}>
         <User email={user.email ?? ""} />
 

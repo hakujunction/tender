@@ -14,10 +14,13 @@ export default function ChatPage() {
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<{ text: string; sender: string }[]>([]);
   const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
       setMessages(await getMessages());
+      setIsLoading(false);
     })();
   }, []);
 
