@@ -1,11 +1,12 @@
 "use client";
-import { Badge, BadgeProps, Calendar as AntCalendar, CalendarProps } from "antd";
+import { Badge, BadgeProps, Calendar as AntCalendar, CalendarProps, Popover } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import updateLocale from "dayjs/plugin/updateLocale";
 
 import { Meeting } from "app/db/calendar";
 
 import styles from "./calendar.module.css";
+import { useState } from "react";
 
 type Props = {
   meetings: Meeting[];
@@ -17,6 +18,16 @@ dayjs.updateLocale("en", {
 });
 
 export default function Calendar({ meetings }: Props) {
+  const [selectedMeeting, setSelectedMeeting] = useState<any | null>(null);
+
+  const hide = () => {
+    setSelectedMeeting(null);
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!newOpen) hide();
+  };
+
   const getListData = (value: Dayjs) => {
     const meetingsOnDate = meetings.filter((meeting) => {
       const meetingDate = dayjs(meeting.date_start);
@@ -27,8 +38,10 @@ export default function Calendar({ meetings }: Props) {
       const meetingDate = dayjs(meeting.date_start);
       const time = meetingDate.format("HH:mm");
       return {
+        id: meeting.id,
         type: meeting.type === 0 ? "warning" : "success",
         content: meeting.name,
+        description: meeting.description,
         time,
       };
     });
@@ -37,14 +50,23 @@ export default function Calendar({ meetings }: Props) {
   const dateCellRender = (value: Dayjs) => {
     const listData = getListData(value);
     return (
-      <ul className={styles.events}>
+      <ul className={styles.events} key={value.toISOString()}>
         {listData.map((item) => (
-          <li key={item.content}>
-            <div className={styles.event} title={`${item.content ?? ""} at ${item.time}`}>
-              <Badge status={item.type as BadgeProps["status"]} text={item.content} />
-              <div className={styles.time}>{item.time}</div>
-            </div>
-          </li>
+          <Popover
+            key={item.content}
+            content={<div style={{maxWidth: '300px'}}>{item.description}</div>}
+            title={item.content}
+            trigger="click"
+            open={selectedMeeting?.id === item.id}
+            onOpenChange={handleOpenChange}
+          >
+            <li>
+              <div className={styles.event} title={`${item.content ?? ""} at ${item.time}`} onClick={() => setSelectedMeeting(item)}>
+                  <Badge status={item.type as BadgeProps["status"]} text={item.content} />
+                  <div className={styles.time}>{item.time}</div>
+              </div>
+            </li>
+          </Popover>
         ))}
       </ul>
     );

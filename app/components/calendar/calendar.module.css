@@ -2,6 +2,10 @@
   display: none;
 }
 
+:global(.ant-picker-calendar-date-content) li {
+  list-style: none;
+}
+
 .event :global(.ant-badge-status) {
   width: 100%;
   overflow: hidden;

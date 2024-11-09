@@ -1,13 +1,29 @@
 "use client";
 import {useEffect, useState} from "react";
-import {AimOutlined} from "@ant-design/icons";
-import {Button, List} from "antd";
+import {
+  AimOutlined,
+} from "@ant-design/icons";
+import {Button, List, notification} from "antd";
 
 import {Content} from "antd/lib/layout/layout";
-import {getCompanies} from "./actions";
+import {applyToCompany, getCompanies} from "./actions";
+
+import type { NotificationArgsProps } from 'antd';
+import Link from "next/link";
+
+type NotificationPlacement = NotificationArgsProps['placement'];
 
 export default function RecommendationsPage() {
   const [companies, setCompanies] = useState<any[]>([]);
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (placement: NotificationPlacement) => {
+    api.info({
+      message: `Events added to calendar`,
+      description: <><p>The events have been added to your calendar. You can check them <Link href="/candidate/calendar">here</Link></p></>,
+      placement,
+    });
+  };
 
   useEffect(() => {
     (async () => {
@@ -17,11 +33,15 @@ export default function RecommendationsPage() {
 
   return (
     <Content style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
+      {contextHolder}
       <List
         dataSource={companies}
         renderItem={(item: any) => (
           <List.Item actions={[
-            <Button key="Apply">Apply</Button>
+            <Button key="Apply" onClick={async () => {
+              await applyToCompany(item);
+              openNotification('topRight');
+            }}>Apply</Button>
           ]}>
             <List.Item.Meta
               title={item.name}
