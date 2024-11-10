@@ -30,7 +30,7 @@ export default function Login() {
             Create an account with your email and password.
           </p>
           <p style={{color: 'red'}}>
-            Hey, Junction participant! You can use hacker@gmail.com and password 1234 to view demo content if you want, or register user otherwise.
+            Hey, Junction participant! You can use hacker@gmail.com and password 1234 in <a href="/login" style={{textDecoration: "underline"}}>Sign-in page</a> (this is Registration page) to view demo content if you want, or register user otherwise.
           </p>
         </div>
         <Form action={register}>
