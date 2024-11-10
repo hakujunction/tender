@@ -114,6 +114,24 @@ export async function applyToCompany(company: any) {
 
   const events = completion.choices[0].message.content!.split("\n").map((line: string) => JSON.parse(line));
 
+  const today = new Date();
+  const nextDay = new Date(today);
+  nextDay.setDate(today.getDate() + 1);
+  nextDay.setHours(14);
+  nextDay.setMinutes(0);
+  nextDay.setSeconds(0);
+  nextDay.setMilliseconds(0);
+
+  events.forEach((event: any, idx: number) => {
+    const date = new Date(nextDay);
+    date.setDate(nextDay.getDate() + idx);
+    event.date_start = date.getTime() / 1000;
+    date.setHours(16);
+    event.date_end = date.getTime() / 1000 + 3600;
+
+    nextDay.setDate(nextDay.getDate() + 1);
+  });
+
   await addEvents(user.id, events);
   console.log("Company ", company.id, "User ", user.id, "Match percent ", company.match_percent);
   await insertCompanyCandidate(company.id, user.id, company.match_percent);
